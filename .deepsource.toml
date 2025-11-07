@@ -1,0 +1,19 @@
+version = 1
+
+[[analyzers]]
+name = "javascript"
+
+  [analyzers.meta]
+  plugins = [
+    "react",
+    "vue",
+    "angularjs"
+  ]
+  environment = [
+    "nodejs",
+    "browser",
+    "jquery"
+  ]
+
+[[transformers]]
+name = "standardjs"
