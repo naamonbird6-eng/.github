@@ -29,3 +29,24 @@ This information will help us triage your report more quickly.
 ## Policy
 
 See [GitHub's Safe Harbor Policy](https://docs.github.com/en/site-policy/security-policies/github-bug-bounty-program-legal-safe-harbor)
+// save as server.js
+const express = require('express');
+const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Dev logging middleware
+app.use((req, res, next) => {
+  const copy = { ...req.body };
+  // mask common sensitive keys
+  ['password', 'token', 'authorization', 'auth'].forEach(k => {
+    if (copy[k]) copy[k] = '***masked***';
+  });
+  console.log(`[DEV LOG] ${req.method} ${req.path} body:`, copy);
+  next();
+});
+
+app.post('/test', (req, res) => res.json({ ok: true }));
+
+app.listen(3000, () => console.log('dev server listening on :3000'));
